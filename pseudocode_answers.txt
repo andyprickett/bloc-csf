@@ -1,0 +1,98 @@
+Short Answer
+
+1) Why do programmers use pseudocode?
+
+>There's a problem to solve, and it's just a problem of some logic and some data handling. It doesn't matter what computer programming language you use to solve it. Pseudocode is used to outline the steps for solving a problem, and it isn't tied to or hindered by the syntax of any particular programming language. It's code for humans to read, not computers to read.
+
+2) If you run pseudocode on your computer what would happen?
+
+>You'd get an error, or just big virtual shrug emoji. Your computer doesn't understand pseudocode directly.
+
+Programming Assignment
+
+1. Create a function that takes two numbers and prints out the greater number.
+
+>
+
+FUNCTION greaterOfTwoNumbers(number1, number2)
+  INPUT number1, number2
+  IF number1 is greater than number2
+    RETURN number1
+  ELSE
+    RETURN number2
+  END IF
+END FUNCTION
+
+2. Create a function that prints out the numbers from 1 to 100.
+
+>
+
+FUNCTION countUpTo(number)
+  INPUT number
+  SET counter to 0
+  WHILE counter is less than number
+    SET counter to (counter + 1)
+    PRINT counter
+  END WHILE
+END FUNCTION
+
+3. Create a function that searches for a specific entry in a phonebook.
+
+>
+
+FUNCTION findPhoneBookEntry(phonebook, entry)
+  FOR every listing in phonebook
+    IF listing is equal to entry
+      RETURN listing
+    END IF
+  END
+END FUNCTION
+
+4. Using the pseudocode you wrote for the previous question, implement it in any computer language of your choice.
+
+>
+
+const phoneBook = {
+  'entry01': {
+    'name': 'Andy Prickett',
+    'phone': 5555555,
+    'address': '25 No Lane'
+  },
+  'entry02': {
+    'name': 'Jen Smith',
+    'phone': 3333333,
+    'address': '2 Oak Drive'
+  },
+  'entry03': {
+    'name': 'Andy Prickett',
+    'phone': 4444444,
+    'address': '16 Everywhere'
+  }
+}
+
+const entryToFind = {
+  'name': 'Andy Prickett',
+  'phone': 4444444,
+  'address': '16 Everywhere'
+}
+
+function isEntry(book, entity, entry) {
+  return ((book[entity]['name'] === entry['name']) &&
+          (book[entity]['phone'] === entry['phone']) &&
+          (book[entity]['address'] === entry['address'])
+  )
+}
+
+function findEntryInPhoneBook(book, entry) {
+  for (var entity in book) {
+    if (isEntry(book, entity, entry)) {
+      return book[entity];
+    }
+  }
+  return "Bummer City. Entry not found."  
+}
+
+console.log(findEntryInPhoneBook(phoneBook, entryToFind));
+
+
+
