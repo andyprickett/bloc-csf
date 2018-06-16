@@ -1,0 +1,321 @@
+Exercises
+
+1) In your own words, explain what clean code is and why it is important.
+
+>Clean code is easily readable by humans. The names are well-chosen, and the patterns it is written in read like an easy to follow flow of thoughts. Repeated processes are written once in small, reusable functions that only done one thing (with no side effects!). Therefore, any changes to the program at large can be easily made in one of these functions. The functions are obvious about what they do, and what their interface expectations are. They can be tested easily, and separately. Objects and classes aren't overly complex, and broken up into more general components, with each not trying to cover too much all by itself. Logic isn't nested so deeply that you can't keep track of the status of the conditions. All of this to simply make it easier for you, or whoever looks at the code later, to be able to follow what the code's intent is and fix any bugs in an efficient way.
+
+2) Read this article about Toyota and their use of bad code. Although you may not yet understand all of the topics discussed, think about another commonly used object that relies on computers and explain what would happen if the code was not created to an acceptable standard.
+
+>There are a handful of stories that have come up about this type of thing: missle launcher with rounding errors, rockets, etc. If an airplane or flight control suffered from too big of an "unclean" software error, we can imagine what would happen: disaster. Less blatantly tragic but quite common, there are apps on our phones that go unused or get deleted very quickly because they just don't work. They were probably rushed into release for business hopes/purposes and not refactored or QA'd properly.
+
+3) Would you consider the following to be clean code? Explain why or why not. If not, refactor the code.
+
+FUNCTION do(x, y)               // Creating a new function
+  IF y = "F" THEN               // Check if y is equal "F"
+  SET z to (x−32) * (5/9)       // Formula to convert degrees fahrenheit to celsius
+  PRINT z                       // Print result
+  ELSE IF y = "C" THEN          // If y not equal to "F", check if equal to "C"
+  SET z to x * 1.8000 + 32.00   // Formula to convert degrees celsius to fahrenheit
+  PRINT z                       // Print result
+  END IF
+END FUNCTION
+
+>Could be more clean, or at least 'functional'. Indistinct variable names, and one function doing too many things:
+
+FUNCTION convertFarenheitToCelcius(degrees)
+  SET temperatureCelcius to (degrees−32) * (5/9)
+  RETURN temperatureCelcius
+END FUNCTION
+
+FUNCTION convertCelciusToFarenheit(degrees)
+  SET temperatureFarenheit to degrees * 1.8000 + 32.00
+  RETURN temperatureFarenheit
+END FUNCTION
+
+FUNCTION printTemperature(temperature)
+  PRINT temperature                   // This is where some appropriate (and adjustable) formatting would happen
+END FUNCTION
+
+FUNCTION printConvertedScaleTemperature(degrees, scale)
+  SET convertedTemperature to degrees
+  IF scale is equal to "F" THEN
+    SET convertedTemperature to (CALL convertFarenheitToCelcius with degrees as the argument RETURNING temperatureCelcius)
+  ELSE IF scale is equal to "C" THEN
+    SET convertedTemperature to (CALL convertCelciusToFarenheit with degrees as the argument RETURNING temperatureFarenheit)
+  END IF
+  CALL printTemperature with convertedTemperature as the argument
+END FUNCTION
+
+4) Would you consider the following to be clean code? Explain why or why not. If not, refactor the code.
+
+FUNCTION calcPercent(sum, total)
+ IF NOT(total = 0) THEN
+     SET percentage to sum / total * 100
+ ELSE
+   PRINT "Sorry, cannot divide by 0"
+ END IF
+
+ PRINT percentage
+END FUNCTION
+
+>I don't know if this is any better. The error handling of "calculatePercent" is awkward and insufficient, but I think that's where it should happen. "printCalculatedPercent" still does 2 things. I need to get better at this.
+
+FUNCTION calculatePercent(sum, total)
+  SET percent to 0
+  IF NOT(total is equal to 0) THEN
+    SET percent to sum / total * 100
+    RETURN percent
+  ELSE
+    PRINT "Sorry, cannot divide by 0"      // Throw an error - stop the program
+  END IF
+END FUNCTION
+
+FUNCTION printPercent(percentage)
+  PRINT percentage                   // This is where some delightful (and adjustable) formatting would happen
+END FUNCTION
+
+FUNCTION printCalculatedPercent(sum, total)
+  SET percent to (CALL calculatePercent with sum and total as the arguments RETURNING percent)
+  CALL printPercent with percent as the argument
+END FUNCTION
+
+5) Using pseudocode, refactor the code for the following examples using the principles you have learned in this checkpoint.
+
+a. The following function prints the subtotal of a customer's transaction and receives payment accordingly.
+
+
+FUNCTION checkOutCustomer(subTotal, discountRate, paymentType)
+   PRINT "Your total due is: " + subTotal * discountRate + (subTotal * tax)
+
+   IF paymentType = 'CASH' THEN
+       CALL getPayment RETURNING amount
+       PRINT "Change due: " + amount - subTotal * discountRate + (subTotal * tax)
+   ELSE IF paymentType = 'CREDIT CARD' THEN
+       CALL getPayment RETURNING amount
+       PRINT "Your credit card has been charged: " + subTotal * discountRate + (subTotal * tax)
+   END IF
+END FUNCTION
+
+>Maybe more could be done, or better.
+
+FUNCTION calculateTotal(subTotal, discountRate, tax)
+  SET total to subTotal * discountRate + (subTotal * tax)
+  RETURN total
+END FUNCTION
+
+FUNCTION processCashPayment(amount, total)
+  SET change to amount - total
+  PRINT "Change due: " + change
+  IF change is greater than 0
+    CALL giveCustomerChange with change
+  END IF
+END FUNCTION
+
+FUNCTION checkOutCustomer(subTotal, discountRate, tax, paymentType)
+  SET total to (CALL calculateTotal with subTotal, discountRate, and tax as the arguments RETURNING total)
+
+  PRINT "Your total due is: " + total
+
+  IF paymentType is equal to 'CASH' THEN
+    CALL getPayment RETURNING amount
+    CALL processCashPayment with amount and total as the arguments
+  ELSE IF paymentType is equal to 'CREDIT CARD' THEN
+    CALL getPayment RETURNING amount
+    PRINT "Your credit card has been charged: " + amount
+  END IF
+
+  PRINT "Thanks for your purchase!"
+END FUNCTION
+
+b. The following function checks out a book if there are no issues with the guest's account.
+
+FUNCTION checkoutBook(book, guest)
+ IF guest.accountActive THEN
+     IF NOT(guest.hasOverdueBooks) THEN
+         IF guest.outstandingFees = 0 THEN
+           APPEND book to guest.books
+           SET book.status to "Checked Out"
+           PRINT "Your books have been issued."
+         END IF
+     END IF
+ ELSE
+     PRINT "Unable to check out book."
+ END IF
+END FUNCTION
+
+>Not too sure how to handle this one best.
+
+FUNCTION checkForGuestIssues(guest)
+  SET issuesResolved to true
+
+  IF guest.hasOverdueBooks is equal to true THEN
+    SET issuesResolved to false
+    PRINT "You have overdue books."
+  END IF
+
+  IF guest.outstandingFees greater than 0 THEN
+    SET issuesResolved to false
+    PRINT "You outstanding fees."
+  END IF
+
+  RETURN issuesResolved
+END FUNCITON
+
+FUNCTION addBook(book, guest)
+  APPEND book to guest.books
+  SET book.status to "Checked Out"
+END FUNCTION
+
+FUNCTION checkoutBook(book, guest)
+  IF guest.accountActive THEN
+    SET issuesResolved to (CALL checkForGuestIssues with guest as the argument RETURNING issuesResolved)
+    IF issuesResolved is equal to true
+      CALL addBook with book and guest as the arguments
+      PRINT "Your books have been issued."
+    ELSE
+      PRINT "Please resolve your issues, and then you can check out books.""
+    END IF
+  ELSE
+    PRINT "Unable to check out book."
+ END IF
+END FUNCTION
+
+c. The following class is a code snippet that should support the transactions a customer can perform at an ATM.
+
+CLASS BankAccount
+
+ FUNCTION displayBalance
+    PRINT balance
+ END FUNCTION
+
+ FUNCTION deposit(amount)
+    SET balance to balance + amount
+ END FUNCTION
+
+ FUNCTION withdraw(amount)
+     IF balance > amount THEN
+       SET balance to balance - amount
+     END
+ END FUNCTION
+
+ FUNCTION creditCardOffer
+     IF NOT(customer.hasCreditCard) THEN
+         CALL offerCreditCard
+     END
+ END FUNCTION
+
+ FUNCTION checkStatus
+     IF NOT(customer.hasCheckingAccount) THEN
+         CALL offerCheckingAccount
+     END
+ END FUNCTION
+
+ ....
+ ....
+ ....
+
+END
+
+>I...am lost on this one. No idea what to do with it. Add more functions?
+
+CLASS BankAccount
+
+  FUNCTION displayBalance(balance)
+    PRINT balance
+  END FUNCTION
+
+  FUNCTION deposit(balance, amount)
+    SET balance to balance + amount
+  END FUNCTION
+
+  FUNCTION withdraw(balance, amount)
+    IF balance > amount THEN
+      SET balance to balance - amount
+    END IF
+  END FUNCTION
+
+  FUNCTION creditCardOffer(customer)
+    IF NOT(customer.hasCreditCard) THEN
+      CALL offerCreditCard(customer)
+    END IF
+  END FUNCTION
+
+  FUNCTION checkStatus(customer)
+    IF NOT(customer.hasCheckingAccount) THEN
+      CALL offerCheckingAccount(customer)
+    END IF
+  END FUNCTION
+
+ ....
+ ....
+ ....
+
+END
+
+Programming Questions
+
+6. Square: Given an array of integers, find out whether the sum of the integers is a perfect square. If it is a perfect square, return the square root, otherwise return the sum.
+
+Example:
+[10,1,4,6,1,1,2] returns 5 because the square root of 25 is 5.
+[1,1] returns 2 because 2 is not a perfect square.
+The square root of 2 is approximately 1.414213562373095.
+
+>
+
+function sumArray(array) {
+  return array.reduce((acc, num) => { 
+    return acc + num
+  },0);
+}
+
+function calculateSquareRoot(number) {
+  return Math.sqrt(number);
+}
+
+function isInteger(number) {
+  return parseInt(number) === number;
+}
+
+function isPerfectSquare(array) {
+  let sum = sumArray(array);
+  let squareRoot = calculateSquareRoot(sum);
+  if (isInteger(squareRoot)) {
+    return squareRoot;
+  } else {
+    return sum;
+  }
+};
+
+console.log(isPerfectSquare([10,1,4,6,1,1,2])); // 5
+console.log(isPerfectSquare([10,1,4,5,1,1,2])); // 24
+console.log(isPerfectSquare([])); // 0
+console.log(isPerfectSquare([0])); // 0
+
+7. Duplicate: Given an array of integers, find out whether the array contains any duplicate elements. The function should return true if any value appears at least twice in the array, and false if every element is distinct.
+
+>I learned this in an old Java course. This is embarrassingly nested and not easy to read. How else do you do this?
+
+function isDuplicateInArray(numbers) {
+  for (let indexEach = 0; indexEach < numbers.length; indexEach++) {
+    for (let indexRest = indexEach + 1; indexRest < numbers.length; indexRest++) {
+      if (numbers[indexEach] === numbers[indexRest]) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+console.log(isDuplicateInArray([1, 3, 4, 2, 8, 9])); // false
+console.log(isDuplicateInArray([1, 3, 4, 3, 8, 9])); // true
+console.log(isDuplicateInArray([])); // false
+console.log(isDuplicateInArray([0])); // false
+
+
+
+
+
+
+
+
