@@ -20,10 +20,9 @@ f) If Patrick wants to leave the line, how would you delete him from the array?
 
 Clunky, but, maybe a tiny bit fun.
 
-const line = (line) => {
-  var myLine = line;
+const processLine = (line) => {
   const positionInLine = (name) => {
-    let indexOfPerson = myLine.indexOf(name);
+    let indexOfPerson = line.indexOf(name);
     if (indexOfPerson >= 0) {
       console.log(`${name} was found at position ${indexOfPerson}!`)
     } else {
@@ -33,12 +32,12 @@ const line = (line) => {
   }
 
   return {
-    addToEnd: (name) => {myLine.push(name)},
+    addToEnd: (name) => {line.push(name)},
     myPosition: (name) => {positionInLine(name)},
     cutBeforeMe: (me, cutter) => {
       let meSpot = positionInLine(me);
       if (meSpot >= 0) {
-        myLine.splice(meSpot, 0, cutter);
+        line.splice(meSpot, 0, cutter);
         console.log(`${cutter} just cut in line before ${me}!`);
       } else {
         console.log("Did you get the names right?");
@@ -47,30 +46,33 @@ const line = (line) => {
     getOutOfLine: (name) => {
       let leaverSpot = positionInLine(name);
       if (leaverSpot >= 0) {
-        myLine.splice(leaverSpot, 1);
+        line.splice(leaverSpot, 1);
         console.log(`See ya, ${name}!`);
       }
     },
-    printLine: () => {console.log(myLine.join(', '))}
+    printLine: () => {console.log(line.join(', '))}
   }
 }
 
-const newLine = line(["Vivian", "Ava", "Josh", "Patrick", "Mike"]);
-newLine.printLine();
+const lineData = ["Vivian", "Ava", "Josh", "Patrick", "Mike"];
+const lineMachine = processLine(lineData);
+lineMachine.printLine();
 
-// newLine.addToEnd("Mary");
-// newLine.printLine();
+lineMachine.addToEnd("Mary");
+lineMachine.printLine();
 
-// newLine.myPosition("Josh");
-// newLine.myPosition("Emily");
+lineMachine.myPosition("Josh");
+lineMachine.myPosition("Emily");
 
-// newLine.cutBeforeMe("Ava", "Melissa");
-// newLine.printLine();
-// newLine.cutBeforeMe("Emily", "Melissa");
+lineMachine.cutBeforeMe("Ava", "Melissa");
+lineMachine.printLine();
+lineMachine.cutBeforeMe("Emily", "Melissa");
 
-// newLine.getOutOfLine("Patrick");
-// newLine.printLine();
-// newLine.getOutOfLine("Emily");
+lineMachine.getOutOfLine("Patrick");
+lineMachine.printLine();
+lineMachine.getOutOfLine("Emily");
+
+console.log(lineData);
 
 2. Provide another real-world example that you can model using a data structure.
 
