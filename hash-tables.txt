@@ -1,0 +1,205 @@
+Exercises
+
+1. What is a hash table?
+
+>A data structure where an array (the "table") has indecies that are mapped to the data by a hashing function.
+
+2. What is hashing?
+
+>The process of converting a data member's key into a numerical index that can be used in the table.
+
+3. How does a has table store data?
+
+>The result of the hashing function is used as the index of the array/table and the data associated with it is stored in that location. This can sometimes result in "collision": two different pieces of data are mapped to the same table index.
+
+4. How are hash tables and objects different?
+
+>Trying to narrow this down to something simple isn't easy. But, let's just say that an object has keys that aren't in any particular order, and it is costly to get the length. The keys need to be a string (or a symbol). Also, iterating over it requires an extra step of getting all of the keys into an iterable structure. Tables take a bunch of similarly structured objects and make them accessible by associating them with an array-like index (of any data type) and structure, and the lovely capabilities that come along with that structure.
+
+5. Determine whether you would use a hash table or an object to store each of the following pieces of data:
+   * A list of pets and their unique names.
+>Just saying "list" says hash table.
+   * The name, age, and the birthday of your best friend.
+>Just seems like an object.
+   * The name and location of every company in a given city.
+>Seems like a table.
+   * All of the books checked out from a library by a particular individual.
+>An object (name as key, array of books as value)?
+   * The primary and secondary phone numbers for a contact.
+>Same as above, just seems like an object.
+
+6. Build a system that allows a sales associate to enter a customer's name, address, and phone number into the system and look up customers using their phone numbers. Store this information in a hash table.
+
+>Not sure what we mean by "Build a system" here. But, I just made some stuff and learned some stuff, trying to demonstrate these concepts.
+
+// This hashing function is borrowed. Wanted to dive in, but it was too deep.
+function simpleHash(stringData, tableSize) {
+  var i, hash = 0;
+  if (stringData == 0) return hash;
+  for (i = 0; i < stringData.length; i++) {
+    hash += (stringData[i].charCodeAt() * (i+1));
+  }
+  
+  return Math.abs(hash) % tableSize;
+}
+
+const customerTable = new Map();
+
+function Customer(name, address, phone) {
+  this.name = name;
+  this.address = address;
+  this.phone = phone;
+}
+
+function customerString(name, address, phone) {
+  return `${name}${address}${phone}`;
+}
+
+function addNewCustomer(name, address, phone) {
+  let customer = new Customer(name, address, phone);
+  let keyString = customerString(name, address, phone);
+  let tableSize = (customerTable.size + 1 * 100);
+  let tableKey = simpleHash(keyString, tableSize);
+
+  customerTable.set(tableKey, customer);
+}
+
+function printCustomer(searchedCustomer) {
+  let { name, address, phone } = searchedCustomer;
+  console.log(`Found customer:\n${name}\n${address}\n${phone}`);
+}
+
+function searchCustomer(phone) {
+  let searchedCustomer = null;
+  for (var [key, value] of customerTable) {
+    if (value.phone == phone) {
+      searchedCustomer = customerTable.get(key);
+    }
+  }
+  printCustomer(searchedCustomer);
+  return searchedCustomer;
+}
+
+addNewCustomer('Someone Special', '23 Over There Lane, Somewhere, CA', 9495451234);
+addNewCustomer('Fun Person', '12 Over Here Road, Fun Place, NY', 2124567890);
+addNewCustomer('Bummer Dude', '56 Get Out Drive, Too Hot, AZ', 6749830987);
+searchCustomer(9495451234);
+searchCustomer(2124567890);
+searchCustomer(6749830987);
+
+7. Build a system that allows a store owner to track their store's inventory using a hash table for storage.
+
+>Least clear on how to handle this one. Imagined a SKU list that someone could use to search for items. My apologies if this is way off base and painful to sort through. That goes for all of 'em.
+
+function simpleHash(stringData, tableSize) {
+  var i, hash = 0;
+  if (stringData == 0) return hash;
+  for (i = 0; i < stringData.length; i++) {
+    hash += (stringData[i].charCodeAt() * (i+1));
+  }
+  
+  return Math.abs(hash) % tableSize;
+}
+
+const storeInventory = [
+  {
+    itemName: 'something cool',
+    description: 'a unique thing that is awesome',
+    inStock: 24
+  },
+  {
+    itemName: 'something lame',
+    description: 'a ubiquitous thing that sucks',
+    inStock: 135
+  },
+  {
+    itemName: 'something ok',
+    description: 'a decent thing that does the job',
+    inStock: 82
+  }
+]
+
+const storeInventoryTable = new Map();
+
+function itemString(itemName, description, inStock) {
+  return `${itemName}${description}${inStock}`;
+}
+
+function addItemsToTable(storeInventory, storeInventoryTable) {
+
+  storeInventory.forEach((item) => {
+    let { itemName, description, inStock } = item;
+    let keyString = itemString(itemName, description, inStock);
+    let tableSize = (storeInventoryTable.size + 1 * 100);
+    let tableKey = simpleHash(keyString, tableSize);
+
+    storeInventoryTable.set(tableKey, item);
+  })
+}
+
+function printItem(searchedItem) {
+  let { itemName, description, inStock } = searchedItem;
+  console.log(`Found Item:\nItem: ${itemName}\nWhat is it? ${description}\nHow many left? ${inStock}`);
+}
+
+function searchForItem(itemSku) {
+  let searchedItem= null;
+  for (var [key, value] of storeInventoryTable) {
+    if (key === itemSku) {
+      searchedItem = storeInventoryTable.get(key);
+    }
+  }
+  printItem(searchedItem);
+  return searchedItem;
+}
+
+addItemsToTable(storeInventory, storeInventoryTable);
+
+searchForItem(52)
+
+8. Build a system that allows digital copies of newspapers to be entered and searched by publisher and publication date. Use hash tables to store the necessary data.
+
+>Feels like there are plenty of more thorough ways of handling this, what with date formatting and such. Would take me forever to do right now, though.
+
+const newspapersTable = new Map();
+
+function Newspaper(publisher, publicationDate, newspaper) {
+  this.publisher = publisher;
+  this.publicationDate = publicationDate;
+  this.newspaperData = newspaper;
+}
+
+function newspaperString(publisher, publicationDate) {
+  return `${publisher}${publicationDate}`;
+}
+
+function addNewNewspaper(publisher, publicationDate, newspaper) {
+  let newspaperData = new Newspaper(publisher, publicationDate, newspaper);
+  let keyString = newspaperString(publisher, publicationDate);
+
+  newspapersTable.set(keyString, newspaperData);
+}
+
+function printNewspaper(searchedNewspaper) {
+  let { publisher, publicationDate, newspaperData } = searchedNewspaper;
+  console.log(`Found Newspaper:\n${publisher}\n${publicationDate}\n${newspaperData}`);
+}
+
+function searchNewspaper(publisher, publicationDate) {
+  let searchedNewspaper = null;
+  let keyString = newspaperString(publisher, publicationDate);
+  for (var [key, value] of newspapersTable) {
+    if (key === keyString) {
+      searchedNewspaper = newspapersTable.get(key);
+    }
+  }
+  printNewspaper(searchedNewspaper);
+  return searchedNewspaper;
+}
+
+addNewNewspaper('NY Times', '01051984', 'Big long string of news data.');
+addNewNewspaper('Chicago Sun', '08141996', 'Big long string of news data.');
+addNewNewspaper('San Francisco Chronicle', '12042003', 'Big long string of news data.');
+searchNewspaper('NY Times', '01051984');
+searchNewspaper('Chicago Sun', '08141996');
+searchNewspaper('San Francisco Chronicle', '12042003');
