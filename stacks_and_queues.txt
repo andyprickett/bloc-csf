@@ -1,0 +1,87 @@
+Exercises
+
+1. What is the main difference between a stack and a queue?
+
+>Stacks only operate from one end of their "line" - the top. Last one in line is the first one out of line. Queues operate on both ends, someone can be added to the end of the line, and someone can leave the front of the line. First one in is the first one out.
+
+2. What are the similarities between stacks and queues?
+
+>They are both unlike a simple array, which is a random-access data structure. Instead, both stacks and queues must process things in some sort of sequential order.
+
+3. Imagine you are an engineer tasked with implementing the UNDO and REDO options in a word processor such as Microsoft Word. Which data structure would you use for each option and why?
+
+>Seems like UNDO would be a stack - keep piling on things you've done, then pluck them off when you want to 'undo' them. Where would you put it? On another stack, I think, because if you hit 'redo' you're going to want the latest one that was added to it. So, just two stacks.
+
+Programming Questions
+
+1. Given a string, reverse it using a stack. For example, the string "Bloc!" should be converted to "!colB".
+
+>
+
+function reverseString(string) {
+  var reversed = [];
+  for (let i = (string.length - 1); i >=0; i--) {
+    reversed.push(string[i]);
+  }
+  return reversed.join('');
+}
+
+console.log(reverseString('Bloc!'));
+
+2. Implement the delete functionality of a stack using one queue. Make a FIFO data structure mirror the functionality of a LIFO data structure.
+
+CLASS Stack
+ FUNCTION pop(queue)
+   ...fill in pseudocode here
+ END FUNCTION
+END CLASS
+
+>It seemed like a shorter take on this would have included modifying a structure while looping through it, which I've learned is yucky. So, a bunch of temps. Not sure this would work, but that's the idea behind it.
+
+CLASS Stack
+  FUNCTION pop(queue)
+    INIT tempQueue
+    INIT originalSize to queue.size
+    INIT counter to 0
+    INIT temp
+    WHILE counter is less than originalSize
+      DEQUEUE queue and store in temp
+      ENQUEUE tempQueue with temp
+      INIT temp
+      ADD 1 to counter
+    END WHILE
+    DEQUEUE queue and store in temp
+    RETURN temp
+    SET queue to tempQueue
+  END FUNCTION
+END CLASS
+
+3. Fill in the methods for the following Queue class so that it will work as expected (FIFO).
+
+CLASS QUEUE
+ FUNCTION enqueue(element)
+   ...fill in pseudocode here
+ END FUNCTION
+
+ FUNCTION dequeue
+   ...fill in pseudocode here
+ END FUNCTION
+END CLASS
+
+>
+
+CLASS QUEUE
+  INIT queue
+
+  FUNCTION enqueue(element)
+    APPEND element to end of queue
+    RETURN queue
+  END FUNCTION
+
+  FUNCTION dequeue
+    INIT temp
+    SET temp to first element of queue (somehow)
+    REMOVE first element of queue from queue
+    RETURN temp
+  END FUNCTION
+END CLASS
