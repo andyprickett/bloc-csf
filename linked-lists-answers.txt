@@ -1,0 +1,143 @@
+Exercises
+
+1. What are some pros and cons of using linked lists instead of arrays?
+
+>Pros: you don't need a giant single chunk of memory to store a linked list. Each node can be stored in any place in memory, and nodes can be added or delete without affecting the allocation of memory in a possibly expensive way.
+
+Cons: More total memory might be required to store a linked list, if it were the same exact size as an immense array. Finding an element requires starting from the top and following the links, instead of the random-access nature of an array. Could be time-consuming.
+
+2. Come up with a real world example of a linked list.
+
+>Seems like the stack of the queue of the browser's JavaScript engine might be linked lists. But, basically maybe a train. You've got to walk through each car to get from the front car to the back car.
+
+Programming Questions
+
+1. The Linked List 'push' function should take a value, create a node, and add it to the end of a list. Below is a 'push' function for a singly linked list. However, there is something wrong with it. Find the bug and fix the code.
+
+LinkedList.prototype.push = function(element) {
+ SET node = {
+   value: element,
+   next: null
+ }
+
+ IF the head node does not exist
+   THEN SET head to node
+ ELSE
+   SET current node to head
+   SET current.next to node
+ }
+}
+
+>
+
+LinkedList.prototype.push = function(element) {
+  SET node = {
+    value: element,
+    next: null
+  }
+
+  IF the head node does not exist
+    THEN SET head to node
+    RETURN node
+  ELSE
+    SET currentNode to head
+    WHILE currentNode.next is NOT null
+      SET currentNode to currentNode.next
+    END WHILE
+    SET currentNode.next to node
+    RETURN node
+  END IF
+}
+
+2. Given an unsorted singly linked list, remove all duplicates from the linked list.
+Example
+Input: a -> c -> d -> d -> a
+Output: a -> c -> d
+
+3. Given an unsorted singly linked list, reverse it.
+Example
+Input: a -> b -> c -> d
+Output: d -> c -> b -> a
+
+>Took care of both 2 and 3 in one shot.
+
+function LinkedList() {
+  this.head = null;
+}
+
+LinkedList.prototype = {
+  makeNode: function(value) {
+    return {
+      data: value,
+      next: null
+    }
+  },
+  addNode: function(value) {
+    let currentNode = this.head;
+    let newNode = this.makeNode(value);
+    if (this.head == null) {
+      this.head = newNode;
+    } else {
+      while (currentNode.next != null) {
+        currentNode = currentNode.next;
+      }
+      currentNode.next = newNode;
+    }
+  },
+  removeDuplicates: function() {
+    let previous = this.head;
+    let store = [];
+    let lastUnique = null;
+    if (previous) {
+      store.push(previous.data);
+      let current = this.head.next;
+      while (current != null) {
+        if (store.indexOf(current.data) == -1) {
+            store.push(current.data);
+            lastUnique = current;
+        } else {
+          previous.next = current.next; 
+        }
+        previous = current;
+        current = current.next;
+      }
+      lastUnique.next = null; // couldn't figure out any other way than this :(
+    } else {
+      console.log("Nothing in the list!")
+    }
+  },
+  reverseList: function() {
+    let current = this.head;
+    let previous = null;
+    let nextNode = null;
+
+    while (current != null) {
+      let tempNext = current.next;
+      current.next = previous;
+      previous = current;
+      current = tempNext;
+    }
+    this.head = previous;
+  }
+}
+
+let myList = new LinkedList();
+myList.addNode(37);
+myList.addNode(39);
+myList.addNode(42);
+myList.addNode(39);
+myList.addNode(65);
+myList.addNode(37);
+myList.addNode(42);
+myList.addNode(39);
+myList.addNode(42);
+console.log(JSON.stringify(myList));
+
+myList.removeDuplicates();
+console.log(JSON.stringify(myList));
+
+myList.reverseList();
+console.log(JSON.stringify(myList));
+
+
+
