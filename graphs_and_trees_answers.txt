@@ -1,0 +1,166 @@
+Exercises
+
+1. What is a binary tree and what makes it unique to other trees?
+
+>Each Node in the tree can have only 0, 1, or 2 children nodes. Most commonly, the "left" node is for lesser values than the current Node, the "right" for greater. So, there is some ordering as you travel "down" the tree.
+
+2. What is a heuristic?
+
+>A best guess baked into an algorithm. A coded attempt at finding a solution in a shorter amount of time, definitely shorter than considering "nearly every infinite option", even at the price of some accuracy.
+
+3. What is another problem besides the shortest-path problem that requires the use of heuristics?
+
+>Virus scanning can use heuristics to guess that a file might be infected based on how closely it resembles the behavior of a known virus-infected file.
+
+4. What is the difference between a depth-first search and a breadth-first search?
+
+>DFS will plunge all the way the bottom of a branch looking for its target, and then back up to a parent where there is a split and plunge to the bottom of the other branch.
+
+BFS will search all nodes closest to the root node first, in successive layers.
+
+5. Explain in your own words what an undirected, a-cyclic, unweighted graph is.
+
+>Nodes connect in a handshake, their connection doesn't have a pre-determined direction. There are some nodes that will dead end, and not loop back to previous nodes, and there is no extra "cost" going from any one node to another.
+
+6. What kind of graph is a binary search tree?
+
+>Unweighted, A-cyclic, Directed
+
+Programming Questions
+
+1. Given a Binary Search Tree and a value, write a function that checks to see whether the value exists within the tree.
+
+Example: The value 10 exists in the tree. The value 23 does not exist in the tree.
+
+>So, gonna loop until I find a match value in the tree for my target, starting with the root node and replacing itself with the node at whichever direction tests out. If never found, return false. This means we got to a leaf and had never found a match.
+
+First inside the loop, check to see if we have a match. If so, rad, we're done, return true. Smells like a recursive solution is possible.
+
+Second, check to see if our currnet node value is less than the target.
+  If so, we need to go to the right, where the numbers are higher. We replace nowTree with
+  whatever node is at nowTree.right. Back to the top.
+Else (first condition was false), then let's check if our current node value is greater than the target.
+  If so, we need to go to the left, where the numbers are lower. We replace nowTree with
+  whatever node is at nowTree.left. Back to the top.
+
+Here's the Tree:
+
+const myTree = {
+  value: 8,
+  left: {
+    value: 3,
+    left: {
+      value: 1,
+      left: null,
+      right: null
+    },
+    right: {
+      value: 6,
+      left: {
+        value: 4,
+        left: null,
+        right: null
+      },
+      right: {
+        value: 7,
+        left: null,
+        right: null
+      }
+    }
+  },
+  right: {
+    value: 10,
+    left: null,
+    right: {
+      value: 14,
+      left: {
+        value: 13,
+        left: null,
+        right: null
+      },
+      right: null
+    }
+  }
+}
+
+const searchTree = (tree, target) => {
+  let nowTree = tree;
+  while (nowTree != null) {
+    if (nowTree.value == target) return true;
+    if (nowTree.value < target) {
+      nowTree = nowTree.right;
+    } else if (nowTree.value > target) {
+      nowTree = nowTree.left;
+    }
+  }
+  return false;
+}
+
+console.log(searchTree(myTree, 10));
+console.log(searchTree(myTree, 23));
+
+2. Given a Binary Search Tree and two nodes, n1 and n2, write a function that finds the distance between the two nodes.
+
+Example: The distance between the nodes 4 and 10 is 4. The distance between the nodes 8 and 10 is 1. The distance between the nodes 1 and 14 is 4.
+
+>First up, I go find the path length from root for each 'n' and store those.
+
+Then I do a swap, trying to get the "master" path to be the shorter of the two paths if possible.
+
+Loop through the the "master", knowing that the "slave" will have the same or extras.
+  As long as there are dupes between them, trim dequeue the "path" arrays.
+
+Return what's left of those "path" arrays' lengths added together.
+
+I see other solutions out there, and I sort of understand them. This solution is not geared up for edge cases and is terribly expensive, memory-wise. But, it's all I could figure right now :( No whiteboard interview for me anytime soon.
+
+Same Tree as a above.
+
+const searchTreePath = (tree, target) => {
+  let nowTree = tree;
+  let path = [];
+  while (nowTree != null) {
+    if (nowTree.value == target) {
+      path.push(nowTree.value);
+      return path;
+    }
+    if (nowTree.value < target) {
+      path.push(nowTree.value);
+      nowTree = nowTree.right;
+    } else if (nowTree.value > target) {
+      path.push(nowTree.value);
+      nowTree = nowTree.left;
+    }
+  }
+  return path;
+}
+
+const findDistance = (tree, n1, n2) => {
+  let n1Path, n2Path, master, slave = [];
+  n1Path = searchTreePath(tree, n1);
+  n2Path = searchTreePath(tree, n2);
+  if (n1Path.length <= n2Path.length) {
+    master = n1Path.slice();
+    slave = n2Path.slice();
+  } else {
+    master = n2Path.slice();
+    slave = n1Path.slice();
+  }
+  for (let i = 0; i < master.length; i++) {
+    if (master[i] == slave[i]) {
+      n1Path.splice(0, 1);
+      n2Path.splice(0, 1);
+    }
+  }
+  return n1Path.length + n2Path.length;
+}
+
+console.log(findDistance(myTree, 4, 10));
+console.log(findDistance(myTree, 8, 10));
+console.log(findDistance(myTree, 1, 14));
+console.log(findDistance(myTree, 1, 7));
+console.log(findDistance(myTree, 4, 7));
+
+
+
+
