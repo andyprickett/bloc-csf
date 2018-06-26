@@ -1,0 +1,74 @@
+Exercises
+
+1. What is time complexity and what is its relation to algorithms?
+
+>The way I am thinking about is, "if I add another piece of data, how quickly does my algorithm get more complex and time comsuming?" If the algorithm has to cover the data multiple times, then one extra piece of data is expensive, the time complexity increases to greater amounts more quickly. The algorithm isn't very efficient. The time complexity is an estimate of  the worst case scenario of this.
+
+2. What is runtime?
+
+>Pretty sure it's just the amount of  physical time that it takes to execute a program.
+
+3. How is the runtime of an algorithm calculated?
+
+>Figure out which parts of your program that are affected by the input data size. Figure out what the time complexity is of each statement. Add them together and start simplifiying the result by dropping constants and keeping "the largest" term, or, the thing that is going to have the most influential impact on runtime.
+
+4. Name the six types of algorithm growth rates we saw in this checkpoint and list them in order of most efficient to least efficient. Now Google another algorithmic growth rate not covered and place it in the correct spot in your list.
+
+>
+
+1) O(1) - constant time: input size doesn't change runtime
+2) O(log n) - logarithmic time: 2 to 1 ratio, 2 more inputs only 1 unit of change
+3) O(n) - linear time: 1 to 1 ratio, 1 more input 1 unit of change
+4) O(n log n) - log-linear time: logarithmic time, n number of times
+5) O(n^2) - quadratic (polynomial) time: proportional to the square of the size of the input
+6) O(2n) - exponential time: growth doubles with each added input
+7) O(n!) - factorial time: if n gets big, then this grows really fast
+
+5. Choose one of the algorithmic growth rates from the last question and make a comparison to a real-life situation.
+
+>In a guessing game, where I have a number between 1 and 100 in mind, and I have to tell you if the number is higher or lower than your guess each time, you can guess the number right in the middle. This halves the potential numbers each time. O(log n).
+
+6. Determine the time complexity of the following snippet of code. It is commonly known as a linear search.
+
+FUNCTION linearSearch(array, target)
+ FOR each number in the array
+   IF number = target THEN
+     RETURN true
+   END IF
+ END FOR
+ RETURN false
+END FUNCTION
+
+>Worst case scenario of this function is that we have to look at every darn item in the area, so O(n).
+
+7. Determine the time complexity of the following snippet of code.
+
+FUNCTION foo(array)
+ FOR each number in the array
+   FOR each number in the array
+     print "Hello"
+   END FOR
+ END FOR
+END FUNCTION
+
+>Worst case here is that, for every element in an array we have to go through each element in another array. If they both had the same number of elements "n", then this would be O(n^2).
+
+8. Determine the time complexity of the following snippet of code. It is commonly known as the Fibonacci sequence.
+
+FUNCTION fibonacci(number)
+ IF number < 1 THEN
+   ERROR
+ ELSE IF number = 1 or 2 THEN
+   RETURN 1
+ ELSE
+   CALL fibonacci WITH number - 2 RETURNING twoBack
+   CALL fibonacci WITH number - 1 RETURNING oneBack
+   RETURN twoBack + oneBack
+ END IF
+END FUNCTION
+
+>Simply (but not completely accurately), for every number input you are executing the recursive call twice, so, O(2n), exponential time.
+
+9. Out of the code snippets you just saw, which is the most time efficient?
+
+>In the long run, the code snippet of number 6 which is linear time proves to be most efficient.
