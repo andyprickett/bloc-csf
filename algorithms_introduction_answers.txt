@@ -1,0 +1,83 @@
+Exercises
+
+1. Using proper pseudo-code, describe the following primitive algorithms:
+* Making coffee;
+* Washing dishes;
+* A choice of your own.
+
+>
+
+* Making coffee:
+
+Presuming a cleaned/emptied coffee automatic coffee maker, and previously ground coffee...
+
+SET cupOfWater to 1
+SET coffeeMakerWaterCompartment to 0
+SET cupMarker to 8
+FOR each cupMarker
+  ADD cupOfWater to coffeeMakerWaterCompartment
+ENDFOR
+
+SET coffeeScoop to 1
+SET coffeeBasket to 0
+FOR each cupMarker
+  ADD coffeeScoop to coffeeBasket
+ENDFOR
+
+// something to symbolize the coffee maker operation...
+
+SET heatWater to 1
+SET waterTemperature to 75
+SET desiredWaterTemperature to 200
+WHILE waterTemperature < desiredWaterTemperature
+  ADD heatWater to waterTemperature
+ENDWHILE
+
+SET pourWater to 1
+SET coffeeInPot to 0
+FOR each coffeeMakerWaterCompartment
+  ADD pourWater to coffeeInPot
+ENDFOR
+
+* Washing Dishes:
+
+Given a collection dirtyDishes...
+
+SET washedDishes to 0
+WHILE washedDishes < dirtyDishes.size
+  CALL washDish
+  ADD 1 to washedDishes
+ENDWHILE
+
+* A choice of your own...
+
+Put on shoes.
+
+Given a collection pairOfShoes...
+
+SET shoesPutOn to 0
+SET leftFoot to false
+FOR each pairOfShoes
+  IF leftFoot is false
+    CALL putOnShoe with pairOfShoes shoe 1
+    SET leftFoot to true
+  ELSE
+    CALL putOnShoe with pairOfShoes shoe 2
+  ENDIF
+ENDFOR
+
+2. As with the knot algorithm, there may be more than one way to solve the problem. It is essential to try to pick the best algorithm for a situation. Name three companies who created an algorithm that made them successful, e.g., Google's search algorithm. It doesn't need to be a tech example (such as a recipe or manufacturing a product). Google's algorithm produces more relevant results than other search engines; what about each of your cases make them stand out?
+
+>
+
+A. Facebook's Find New Friends algorithm. Most people think the News Feed is their most successful algorithm, but I think that before that the site expanded rapidly because people were "magically" presented with people they were somehow connected to all the time.
+
+B. Google AdWords has been quite successful, more than anyone else it seems, even though it is painful sometime frightening as a user to be presented with ads that are closely related to your internet history.
+
+C. OKCupid Date Matching was curiously successful enough to change the entire culture into one where online date setup was no longer considered a strange or anomalous behavior. Huge transition (I witnessed right before my very eyes!).
+
+3. Hypothesize about what constitutes an efficient algorithm versus an inefficient algorithm.
+
+>
+
+Seems pretty simple: an efficient algorithm will use as few CPU clock cycles and memory locations as possible to deliver the results in as short a time as possible. To do so means not touching every piece of data unless it absolutely has to, and not touching data more times than absolutely necessary. Better logic to sort through giant chunks of possibilty more decisively.
