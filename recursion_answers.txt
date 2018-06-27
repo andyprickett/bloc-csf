@@ -1,0 +1,25 @@
+Exercises
+
+1. Define and compare recursion and iteration.
+
+>Recursion is a function/procedure that repeats by calling itself somewhere within its definition, changing the passed in data each time (making "the problem" smaller), and exiting/returning only when a base case is reached. Every cycle is another "layer" in the stack, and can add up detrimentally.
+
+Iteration is more sequential, where the loop is performed until some condition is reached, modifying its counter or result data along the way, and ultimately returns a result after its completion. While iteration doesn't usually have the memory-loading problems of recursion, it can be harder to figure out a solution iteratively.
+
+2. Name five algorithms that are commonly implemented by recursion.
+
+>Factorial, Find Max number, Fibonacci, Tree traversals (search), Quick/Merge Sort
+
+3. When should you use recursion, and when should you avoid recursion? Give examples for each.
+
+>Recursion lends itself towards problems that are better solved with the divide and conquer approach. If you can solve the problem by making it smaller and smaller and then combining those small solutions, then a recursive solution is in order. In a solution to find out if a string is a palindrome, you check smaller versions of the string for palindrome status. If one of those fails, no bigger version of the string will pass. If your string was 1 million characters long, however, a recursive solution might topple the stack.
+
+4. Compare the recursive and iterative solutions to the three algorithms from the checkpoint (Factorial, Maximum, and Fibonacci). What is similar, and what is different?
+
+>Similarly, there is some handling of a "base case", or loop-ending provisions. The main difference might just be that recursive solutions use the return value of a function (in fact, the function itself) as part of its solution, and...digs deep into the data before "unwinding" with return values that become return values that become return values. The iterative tend to update a variable, and then at long last return its value just once at the end.
+
+5. Given a multi-dimensional collection (such as an array) where the number of dimensions is unknown, write a recursive algorithm to count the number of items in the entire collection.
+
+>
+
+
