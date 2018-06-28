@@ -22,4 +22,75 @@ Iteration is more sequential, where the loop is performed until some condition i
 
 >
 
+const collection = [
+                    [
+                      [1, 2, 3],
+                      [4, 5, 6],
+                      [7, 8, 9]
+                    ],
+                    [
+                      [1, 2, 3],
+                      [4, 5, 6],
+                      [7, 8, 9]
+                    ],
+                    [
+                      [1, 2, 3],
+                      [4, 5, 6],
+                      [7, 8, 9]
+                    ]
+                   ];
+
+function countHowMany(something) {
+  if(something.length === undefined) {             // Is something an object?
+    return 1;                                      // No, return 1 (base case)
+  } else {
+    let counter = 0;
+    for (let i = 0; i < something.length; i++) {   // Loop through array
+      counter += countHowMany(something[i]);       // Add to a running total of base cases
+    }
+    return counter;
+  }
+}
+
+console.log(countHowMany(collection));
+
+6. A palindrome is a word or phrase whose spelling is the same either direction (e.g., racecar). Write a recursive algorithm to determine if a given word or phrase is a palindrome.
+
+>
+
+function firstCharacter(thing) {
+  return thing.charAt(0);
+}
+
+function lastCharacter(thing) {
+  return thing.charAt(thing.length -1);
+}
+
+function middleCharacters(thing) {
+  return thing.slice(1, -1);
+}
+
+function isPalindrome(something) {
+  if (something.length <= 1) {
+    return true;
+  }
+  if (firstCharacter(something) === lastCharacter(something)) {
+    return isPalindrome(middleCharacters(something));
+  }
+  return false;
+}
+
+console.log(isPalindrome('rotor'));
+console.log(isPalindrome('pritorp'));
+console.log(isPalindrome('p'));
+console.log(isPalindrome(''));
+
+7. Laura and Xander are going door-to-door around their block looking for their lost cat. Write a recursive algorithm showing one way they can visit every house on their block exactly once.
+
+>I've tried things, looked around the wonderful world wide web, and yet it does not occur to me what to do with this one.
+
+
+
+
+
 
