@@ -1,0 +1,97 @@
+Exercises
+
+Short Answer
+
+1. What is a real-life scenario that uses linear search?
+>
+If you are looking for something in an unsorted pile of stuff, you basically have to touch each item until you find the one you're looking for (or not). Sucks.
+
+2. What is a real-life scenario that uses binary search?
+>
+I think we do it naturally a bit when, say, you're looking for that copy of Raiders of the Lost Ark on your shelf of alphabetized VHS tapes. Your eye makes a guess, and then based on where they land you will adjust the parameters of your search and go look somewhere that spot and the end.
+
+3. Given the alphabetically sorted collection in this checkpoint, how many iterations would it take to find the value G using linear search?
+>
+You'd find it during the seventh iteration.
+
+4. Given the alphabetically sorted collection in this checkpoint, how many iterations would it take to find the value G using binary search?
+>
+We'd find it on the third iteration. Or, base-2 logarithm of n, where n is how many elements are in the collection.
+
+5. Given an unsorted collection of a million items, which algorithm would you choose between linear search and binary search? Explain your reasoning.
+>
+You say "unsorted" and I say "linear". Would send binary search on a possible wild goose chase. At least with linear there'd be a chance of finding the target early in the iterations.
+
+6. Given a sorted collection of a million items, which algorithm would you choose between linear search and binary search? Explain your reasoning.
+>
+Sorted = binary. Now we're talkin'. Found in 19 iterations at most.
+
+Programming Assignment
+
+1. You and a friend have set a wager to see who can find the word "Albatross" in the dictionary the fastest. Write a program to allow you to win the bet.
+>
+function binarySearch(collection, target, min = 0, max = collection.length - 1) {
+  if (max < min) {
+    return -1;
+  }
+  let mid = Math.floor((max - min) / 2) + min;
+  if (collection[mid] == target) {
+    return mid;
+  } else if (target < collection[mid]) {
+    console.log("Looking to the left...");
+    return binarySearch(collection, target, min, mid - 1);
+  } else {
+    console.log("Looking to the right...");
+    return binarySearch(collection, target, mid + 1, max);
+  }
+}
+
+function findWord(collection, target) {
+  let upperCaseCollection = collection.map((word) => word.toUpperCase());
+
+  let upperCaseTarget = target.toUpperCase();
+  let result = binarySearch(upperCaseCollection, upperCaseTarget);
+  if (result < 0) {
+    console.log("Bruh, not found!");
+  } else {
+    console.log(`Found ${target} at index ${result}.`);
+  }
+}
+
+const dictionary = ['aardvark', 'accent', 'aggression', 'Albatross', 'candy', 'elephant', 'Goods', 'lamp', 'noodle', 'rug', 'tool', 'zebra'];
+
+findWord(dictionary, 'Albatross');
+findWord(dictionary, 'rug');
+findWord(dictionary, 'Zebra');
+findWord(dictionary, 'moonlight');
+
+2. You work at a pet store, and a child has asked you to net the only white-spotted goldfish from the fish tank. Write a program that will help you net the right fish.
+>
+const fishInTank = ['fish', 'fish', 'fish', 'fish', 'fish', 'fish', 'white-spotted goldfish', 'fish', 'fish'];
+
+function linearSearch(collection, target) {
+  let result = null;
+  for (let i = 0; i < collection.length; i++) {
+    console.log("Looking...");
+    if (collection[i] === target) {
+      result = i;
+      break
+    }
+  }
+  return result;
+}
+
+function findFish(collection, target) {
+  let upperCaseCollection = collection.map((word) => word.toUpperCase());
+  let upperCaseTarget = target.toUpperCase();
+
+  let result = linearSearch(upperCaseCollection, upperCaseTarget);
+  if (result === null) {
+    console.log("Bruh, not found!");
+  } else {
+    console.log(`Found ${target} at index ${result}.`);
+  }
+}
+
+findFish(fishInTank, 'white-spotted goldfish');
+findFish(fishInTank, 'fish');
