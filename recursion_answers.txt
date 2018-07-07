@@ -87,8 +87,37 @@ console.log(isPalindrome(''));
 
 7. Laura and Xander are going door-to-door around their block looking for their lost cat. Write a recursive algorithm showing one way they can visit every house on their block exactly once.
 
->I've tried things, looked around the wonderful world wide web, and yet it does not occur to me what to do with this one.
+>Still not positive this is what the problem is looking for.
 
+const houseList = [
+  {
+    name: 'house1',
+    visited: null
+  },
+  {
+    name: 'house2',
+    visited: null
+  },
+  {
+    name: 'house3',
+    visited: null
+  }
+]
+
+function visitHouse(houseList, first = 0, last = houseList.length - 1) {
+  if (last < first) {
+    console.log('Everyone was visited.');
+    return;
+  }
+  houseList[first]['visited'] = true;
+  visitHouse(houseList, first + 1, last);
+}
+
+visitHouse(houseList);
+
+for (let i = 0; i < houseList.length; i++) {
+  console.log(`${houseList[i]['name']} visited? ${houseList[i]['visited']}`);
+}
 
 
 
